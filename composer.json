@@ -1,12 +1,16 @@
 {
-    "name": "runner/nezha-cashier",
-    "description": "",
+    "name": "avenger/jarvis",
+    "description": "Jarvis payment component",
     "type": "library",
-    "license": "MIT",
+    "license": "APC",
     "authors": [
         {
             "name": "runnerlee",
             "email": "runnerleer@gmail.com"
+        },
+        {
+            "name": "janhuang",
+            "email": "bboyjanhuang@gmail.com"
         }
     ],
     "require": {

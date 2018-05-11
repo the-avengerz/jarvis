@@ -11,7 +11,7 @@ use FastD\Http\Request;
 use Avengers\Jarvis\Exception\GatewayException;
 use Avengers\Jarvis\Exception\GatewayMethodNotSupportException;
 use Avengers\Jarvis\Exception\PaypalGetTransactionFailedAfterDoCharge;
-use Avengers\Jarvis\Gateways\AbstractGateway;
+use Avengers\Jarvis\AbstractGateway;
 use Avengers\Jarvis\Requests\Charge;
 use Avengers\Jarvis\Requests\Close;
 use Avengers\Jarvis\Requests\Query;
@@ -31,7 +31,7 @@ class ExpressCheckout extends AbstractGateway
      *
      * @return array
      */
-    public function charge(Charge $form): array
+    public function charge(Charge $form)
     {
         if ($form->has('extras.TOKEN')) {
             return $this->doCharge($form);
@@ -47,7 +47,7 @@ class ExpressCheckout extends AbstractGateway
      *
      * @return array
      */
-    public function refund(Refund $form): array
+    public function refund(Refund $form)
     {
         throw new GatewayMethodNotSupportException();
     }
@@ -59,7 +59,7 @@ class ExpressCheckout extends AbstractGateway
      *
      * @return array
      */
-    public function close(Close $form): array
+    public function close(Close $form)
     {
         throw new GatewayMethodNotSupportException();
     }
@@ -71,11 +71,11 @@ class ExpressCheckout extends AbstractGateway
      *
      * @return array
      */
-    public function query(Query $form): array
+    public function query(Query $form)
     {
         $result = $this->queryTransaction($form->get('order_id'), $form->get('extras'));
 
-        if ('Completed' !== ($result['L_STATUS0'] ?? '')) {
+        if ('Completed' !== (isset($result['L_STATUS0']) ? $result['L_STATUS0'] : '')) {
             throw new GatewayException('transaction not found');
         }
 
@@ -87,7 +87,7 @@ class ExpressCheckout extends AbstractGateway
             'buyer_name' => $result['L_EMAIL0'],
             'buyer_email' => $result['L_EMAIL0'],
             'amount' => $result['L_AMT0'],
-            'tax' => abs($result['L_FEEAMT0'] ?? 0),
+            'tax' => abs(isset($result['L_FEEAMT0']) ? $result['L_FEEAMT0'] : 0),
             'raw' => $result,
         ];
     }
@@ -102,7 +102,7 @@ class ExpressCheckout extends AbstractGateway
      *
      * @return array
      */
-    public function chargeNotify(array $receives): array
+    public function chargeNotify(array $receives)
     {
         $transaction = $this->queryTransaction($receives['custom']);
 
@@ -131,7 +131,7 @@ class ExpressCheckout extends AbstractGateway
      *
      * @return array
      */
-    public function refundNotify(array $receives): array
+    public function refundNotify(array $receives)
     {
         throw new GatewayMethodNotSupportException();
     }
@@ -143,7 +143,7 @@ class ExpressCheckout extends AbstractGateway
      *
      * @return array
      */
-    public function closeNotify(array $receives): array
+    public function closeNotify(array $receives)
     {
         throw new GatewayMethodNotSupportException();
     }
@@ -155,7 +155,7 @@ class ExpressCheckout extends AbstractGateway
      *
      * @return bool
      */
-    public function verify($receives): bool
+    public function verify($receives)
     {
         $response = (new Request('POST', self::WEB_GATEWAY))->send("cmd=_notify-validate&{$receives}");
 
@@ -167,7 +167,7 @@ class ExpressCheckout extends AbstractGateway
      *
      * @return string
      */
-    public function success(): string
+    public function success()
     {
         return 'SUCCESS.';
     }
@@ -177,7 +177,7 @@ class ExpressCheckout extends AbstractGateway
      *
      * @return string
      */
-    public function fail(): string
+    public function fail()
     {
         return 'ERROR.';
     }
@@ -187,7 +187,7 @@ class ExpressCheckout extends AbstractGateway
      *
      * @return array
      */
-    public function convertNotificationToArray($receives): array
+    public function convertNotificationToArray($receives)
     {
         parse_str($receives, $receives);
 
@@ -199,7 +199,7 @@ class ExpressCheckout extends AbstractGateway
      *
      * @return string
      */
-    public function receiveNotificationFromRequest(): string
+    public function receiveNotificationFromRequest()
     {
         return file_get_contents('php://input');
     }
@@ -209,7 +209,7 @@ class ExpressCheckout extends AbstractGateway
      *
      * @return array
      */
-    protected function setCharge(Charge $form): array
+    protected function setCharge(Charge $form)
     {
         $payload = $this->createPayload(
             array_merge(
@@ -250,7 +250,7 @@ class ExpressCheckout extends AbstractGateway
      *
      * @return array
      */
-    protected function doCharge(Charge $form): array
+    protected function doCharge(Charge $form)
     {
         $payload = $this->createPayload(
             array_merge(
@@ -303,7 +303,7 @@ class ExpressCheckout extends AbstractGateway
      *
      * @return array
      */
-    protected function queryTransaction($orderId, array $extras = []): array
+    protected function queryTransaction($orderId, array $extras = [])
     {
         $payload = $this->createPayload(
             array_merge(
@@ -326,7 +326,7 @@ class ExpressCheckout extends AbstractGateway
      *
      * @return array
      */
-    protected function createPayload(array $parameters): array
+    protected function createPayload(array $parameters)
     {
         return array_merge(
             [
@@ -345,7 +345,7 @@ class ExpressCheckout extends AbstractGateway
      *
      * @return array
      */
-    protected function request($url, $payload): array
+    protected function request($url, $payload)
     {
         $request = (new Request('POST', $url));
 
@@ -364,7 +364,7 @@ class ExpressCheckout extends AbstractGateway
 
         parse_str((string) $response->getBody(), $result);
 
-        if ('Success' !== ($result['ACK'] ?? '')) {
+        if ('Success' !== (isset($result['ACK']) ? $result['ACK'] : '')) {
             throw new GatewayException('Paypal Gateway Error: '.$result['L_LONGMESSAGE0'], $result);
         }
 
