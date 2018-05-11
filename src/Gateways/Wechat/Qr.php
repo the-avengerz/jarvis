@@ -5,9 +5,9 @@
  * @time: 2018-01
  */
 
-namespace Runner\NezhaCashier\Gateways\Wechat;
+namespace Avengers\Jarvis\Gateways\Wechat;
 
-use Runner\NezhaCashier\Requests\Charge;
+use Avengers\Jarvis\Requests\Charge;
 
 class Qr extends AbstractWechatGateway
 {

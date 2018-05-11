@@ -97,7 +97,7 @@ charge($order, 'wechat_qr'); // 调用微信扫码支付
 那么在这个扩展包中, 提供的支付调用方式也是如此简单:
 ```php
 <?php
-use Runner\NezhaCashier\Cashier;
+use Avengers\Jarvis\Cashier;
 
 $config = [
     'app_id' => 'xxxx',
@@ -131,7 +131,7 @@ echo $response->get('charge_url');
 ```php
 <?php
 
-use Runner\NezhaCashier\Cashier;
+use Avengers\Jarvis\Cashier;
 
 $config = [
     'app_id' => 'xxxx',

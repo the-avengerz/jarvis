@@ -5,10 +5,10 @@
  * @time: 2018-01
  */
 
-namespace Runner\NezhaCashier\Gateways\Wechat;
+namespace Avengers\Jarvis\Gateways\Wechat;
 
 use FastD\Http\Request;
-use Runner\NezhaCashier\Exception\GatewayException;
+use Avengers\Jarvis\Exception\GatewayException;
 
 class Mina extends Official
 {

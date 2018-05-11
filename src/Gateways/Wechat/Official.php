@@ -5,11 +5,11 @@
  * @time: 2018-01
  */
 
-namespace Runner\NezhaCashier\Gateways\Wechat;
+namespace Avengers\Jarvis\Gateways\Wechat;
 
 use FastD\Http\Request;
-use Runner\NezhaCashier\Exception\GatewayException;
-use Runner\NezhaCashier\Requests\Charge;
+use Avengers\Jarvis\Exception\GatewayException;
+use Avengers\Jarvis\Requests\Charge;
 
 class Official extends AbstractWechatGateway
 {

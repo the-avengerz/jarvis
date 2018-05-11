@@ -5,9 +5,9 @@
  * @time: 2018-02
  */
 
-namespace Runner\NezhaCashier\Testing;
+namespace Avengers\Jarvis\Testing;
 
-use Runner\NezhaCashier\Utils\Collection;
+use Avengers\Jarvis\Utils\Collection;
 
 class CollectionTest extends \PHPUnit_Framework_TestCase
 {

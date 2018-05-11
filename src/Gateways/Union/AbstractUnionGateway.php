@@ -5,15 +5,15 @@
  * @time: 2018-01
  */
 
-namespace Runner\NezhaCashier\Gateways\Union;
+namespace Avengers\Jarvis\Gateways\Union;
 
 use DateTime;
 use FastD\Http\Request;
-use Runner\NezhaCashier\Exception\GatewayException;
-use Runner\NezhaCashier\Exception\GatewayMethodNotSupportException;
-use Runner\NezhaCashier\Gateways\AbstractGateway;
-use Runner\NezhaCashier\Requests\Close;
-use Runner\NezhaCashier\Requests\Refund;
+use Avengers\Jarvis\Exception\GatewayException;
+use Avengers\Jarvis\Exception\GatewayMethodNotSupportException;
+use Avengers\Jarvis\Gateways\AbstractGateway;
+use Avengers\Jarvis\Requests\Close;
+use Avengers\Jarvis\Requests\Refund;
 
 abstract class AbstractUnionGateway extends AbstractGateway
 {

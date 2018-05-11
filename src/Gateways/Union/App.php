@@ -5,12 +5,12 @@
  * @time: 2018-01
  */
 
-namespace Runner\NezhaCashier\Gateways\Union;
+namespace Avengers\Jarvis\Gateways\Union;
 
-use Runner\NezhaCashier\Exception\GatewayException;
-use Runner\NezhaCashier\Exception\GatewayMethodNotSupportException;
-use Runner\NezhaCashier\Requests\Charge;
-use Runner\NezhaCashier\Requests\Query;
+use Avengers\Jarvis\Exception\GatewayException;
+use Avengers\Jarvis\Exception\GatewayMethodNotSupportException;
+use Avengers\Jarvis\Requests\Charge;
+use Avengers\Jarvis\Requests\Query;
 
 class App extends AbstractUnionGateway
 {

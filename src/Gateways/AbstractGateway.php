@@ -5,10 +5,10 @@
  * @time: 2018-01
  */
 
-namespace Runner\NezhaCashier\Gateways;
+namespace Avengers\Jarvis\Gateways;
 
-use Runner\NezhaCashier\Contracts\GatewayInterface;
-use Runner\NezhaCashier\Utils\Config;
+use Avengers\Jarvis\Contracts\GatewayInterface;
+use Avengers\Jarvis\Utils\Config;
 
 abstract class AbstractGateway implements GatewayInterface
 {

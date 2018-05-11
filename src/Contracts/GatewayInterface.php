@@ -5,12 +5,12 @@
  * @time: 2018-01
  */
 
-namespace Runner\NezhaCashier\Contracts;
+namespace Avengers\Jarvis\Contracts;
 
-use Runner\NezhaCashier\Requests\Charge;
-use Runner\NezhaCashier\Requests\Refund;
-use Runner\NezhaCashier\Requests\Close;
-use Runner\NezhaCashier\Requests\Query;
+use Avengers\Jarvis\Requests\Charge;
+use Avengers\Jarvis\Requests\Refund;
+use Avengers\Jarvis\Requests\Close;
+use Avengers\Jarvis\Requests\Query;
 
 interface GatewayInterface
 {

@@ -5,7 +5,7 @@
  * @time: 2018-01
  */
 
-namespace Runner\NezhaCashier\Notifications;
+namespace Avengers\Jarvis\Notifications;
 
 class Close
 {

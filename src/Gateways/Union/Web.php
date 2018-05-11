@@ -5,10 +5,10 @@
  * @time: 2018-01
  */
 
-namespace Runner\NezhaCashier\Gateways\Union;
+namespace Avengers\Jarvis\Gateways\Union;
 
-use Runner\NezhaCashier\Requests\Charge;
-use Runner\NezhaCashier\Requests\Query;
+use Avengers\Jarvis\Requests\Charge;
+use Avengers\Jarvis\Requests\Query;
 
 class Web extends AbstractUnionGateway
 {

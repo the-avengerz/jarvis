@@ -5,9 +5,9 @@
  * @time: 2018-03
  */
 
-namespace Runner\NezhaCashier\Gateways\Alipay;
+namespace Avengers\Jarvis\Gateways\Alipay;
 
-use Runner\NezhaCashier\Requests\Charge;
+use Avengers\Jarvis\Requests\Charge;
 
 class App extends AbstractAlipayGateway
 {

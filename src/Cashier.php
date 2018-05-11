@@ -5,16 +5,16 @@
  * @time: 2018-01
  */
 
-namespace Runner\NezhaCashier;
+namespace Avengers\Jarvis;
 
-use Runner\NezhaCashier\Contracts\GatewayInterface;
-use Runner\NezhaCashier\Exception\InvalidNotificationException;
-use Runner\NezhaCashier\Gateways\AbstractGateway;
-use Runner\NezhaCashier\Utils\AbstractOption;
-use Runner\NezhaCashier\Utils\Collection;
+use Avengers\Jarvis\Contracts\GatewayInterface;
+use Avengers\Jarvis\Exception\InvalidNotificationException;
+use Avengers\Jarvis\Gateways\AbstractGateway;
+use Avengers\Jarvis\Utils\AbstractOption;
+use Avengers\Jarvis\Utils\Collection;
 use InvalidArgumentException;
-use Runner\NezhaCashier\Utils\Config;
-use Runner\NezhaCashier\Utils\Str;
+use Avengers\Jarvis\Utils\Config;
+use Avengers\Jarvis\Utils\Str;
 
 class Cashier
 {

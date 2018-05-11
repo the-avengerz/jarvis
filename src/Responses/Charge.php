@@ -5,9 +5,9 @@
  * @time: 2018-01
  */
 
-namespace Runner\NezhaCashier\Responses;
+namespace Avengers\Jarvis\Responses;
 
-use Runner\NezhaCashier\Utils\AbstractOption;
+use Avengers\Jarvis\Utils\AbstractOption;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class Charge extends AbstractOption

@@ -5,17 +5,17 @@
  * @time: 2018-01
  */
 
-namespace Runner\NezhaCashier\Gateways\Paypal;
+namespace Avengers\Jarvis\Gateways\Paypal;
 
 use FastD\Http\Request;
-use Runner\NezhaCashier\Exception\GatewayException;
-use Runner\NezhaCashier\Exception\GatewayMethodNotSupportException;
-use Runner\NezhaCashier\Exception\PaypalGetTransactionFailedAfterDoCharge;
-use Runner\NezhaCashier\Gateways\AbstractGateway;
-use Runner\NezhaCashier\Requests\Charge;
-use Runner\NezhaCashier\Requests\Close;
-use Runner\NezhaCashier\Requests\Query;
-use Runner\NezhaCashier\Requests\Refund;
+use Avengers\Jarvis\Exception\GatewayException;
+use Avengers\Jarvis\Exception\GatewayMethodNotSupportException;
+use Avengers\Jarvis\Exception\PaypalGetTransactionFailedAfterDoCharge;
+use Avengers\Jarvis\Gateways\AbstractGateway;
+use Avengers\Jarvis\Requests\Charge;
+use Avengers\Jarvis\Requests\Close;
+use Avengers\Jarvis\Requests\Query;
+use Avengers\Jarvis\Requests\Refund;
 
 class ExpressCheckout extends AbstractGateway
 {

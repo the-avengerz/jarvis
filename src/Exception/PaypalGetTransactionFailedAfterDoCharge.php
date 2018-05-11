@@ -5,7 +5,7 @@
  * @time: 2018-04
  */
 
-namespace Runner\NezhaCashier\Exception;
+namespace Avengers\Jarvis\Exception;
 
 use RuntimeException;
 

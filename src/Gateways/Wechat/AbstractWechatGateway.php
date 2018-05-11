@@ -5,15 +5,15 @@
  * @time: 2018-01
  */
 
-namespace Runner\NezhaCashier\Gateways\Wechat;
+namespace Avengers\Jarvis\Gateways\Wechat;
 
 use FastD\Http\Request;
-use Runner\NezhaCashier\Exception\GatewayException;
-use Runner\NezhaCashier\Gateways\AbstractGateway;
-use Runner\NezhaCashier\Requests\Charge;
-use Runner\NezhaCashier\Requests\Close;
-use Runner\NezhaCashier\Requests\Query;
-use Runner\NezhaCashier\Requests\Refund;
+use Avengers\Jarvis\Exception\GatewayException;
+use Avengers\Jarvis\Gateways\AbstractGateway;
+use Avengers\Jarvis\Requests\Charge;
+use Avengers\Jarvis\Requests\Close;
+use Avengers\Jarvis\Requests\Query;
+use Avengers\Jarvis\Requests\Refund;
 
 abstract class AbstractWechatGateway extends AbstractGateway
 {

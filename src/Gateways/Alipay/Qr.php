@@ -5,7 +5,7 @@
  * @time: 2018-01
  */
 
-namespace Runner\NezhaCashier\Gateways\Alipay;
+namespace Avengers\Jarvis\Gateways\Alipay;
 
 class Qr extends AbstractAlipayGateway
 {

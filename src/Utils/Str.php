@@ -5,7 +5,7 @@
  * @time: 2018-03
  */
 
-namespace Runner\NezhaCashier\Utils;
+namespace Avengers\Jarvis\Utils;
 
 class Str
 {
