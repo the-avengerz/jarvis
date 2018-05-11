@@ -7,26 +7,32 @@
 
 namespace Avengers\Jarvis\Gateways\Alipay;
 
+
+use Avengers\Jarvis\Utils\AbstractOption;
 use FastD\Http\Request;
 use Avengers\Jarvis\Exception\GatewayException;
 use Avengers\Jarvis\Exception\GatewayMethodNotSupportException;
-use Avengers\Jarvis\Gateways\AbstractGateway;
+use Avengers\Jarvis\AbstractGateway;
 use Avengers\Jarvis\Requests\Charge;
 use Avengers\Jarvis\Requests\Close;
 use Avengers\Jarvis\Requests\Query;
 use Avengers\Jarvis\Requests\Refund;
 use InvalidArgumentException;
 
+/**
+ * Class AbstractAlipayGateway
+ * @package Avengers\Jarvis\Gateways\Alipay
+ */
 abstract class AbstractAlipayGateway extends AbstractGateway
 {
-    const OPENAPI_GATEWAY = 'https://openapi.alipay.com/gateway.do';
+    const PRODUCT_GATEWAY = 'https://openapi.alipay.com/gateway.do';
+    const SANDBOX_GATEWAY = 'https://openapi.alipaydev.com/gateway.do';
 
     /**
      * @param Charge $form
-     *
      * @return array
      */
-    public function charge(Charge $form): array
+    public function charge(Charge $form)
     {
         $content = array_merge(
             [
@@ -43,7 +49,7 @@ abstract class AbstractAlipayGateway extends AbstractGateway
             if (($expiredAt = $form->get('expired_at')) <= time() + 60) {
                 throw new InvalidArgumentException('charge must expire after 1 minutes');
             }
-            $content['timeout_express'] = (int) (($expiredAt - time()) / 60).'m';
+            $content['timeout_express'] = (int)(($expiredAt - time()) / 60).'m';
         }
 
         $payload = $this->createPayload(
@@ -63,7 +69,7 @@ abstract class AbstractAlipayGateway extends AbstractGateway
      *
      * @return array
      */
-    public function refund(Refund $form): array
+    public function refund(Refund $form)
     {
         $payload = $this->createPayload(
             'alipay.trade.refund',
@@ -96,7 +102,7 @@ abstract class AbstractAlipayGateway extends AbstractGateway
      *
      * @return array
      */
-    public function close(Close $form): array
+    public function close(Close $form)
     {
         $payload = $this->createPayload(
             'alipay.trade.close',
@@ -116,7 +122,7 @@ abstract class AbstractAlipayGateway extends AbstractGateway
      *
      * @return array
      */
-    public function query(Query $form): array
+    public function query(Query $form)
     {
         $payload = $this->createPayload(
             'alipay.trade.query',
@@ -141,14 +147,14 @@ abstract class AbstractAlipayGateway extends AbstractGateway
         ];
     }
 
-    public function chargeNotify(array $receives): array
+    public function chargeNotify(array $receives)
     {
         return [
             'order_id' => $receives['out_trade_no'],
             'status' => $this->formatTradeStatus($receives['trade_status']),
             'trade_sn' => $receives['trade_no'],
             'buyer_identifiable_id' => $receives['buyer_id'],
-            'amount' => $receives['receipt_amount'] ?? 0,
+            'amount' => isset($receives['receipt_amount']) ? $receives['receipt_amount'] : 0,
             'buyer_name' => '',
             'paid_at' => (isset($receives['gmt_payment']) ? strtotime($receives['gmt_payment']) : 0),
             'raw' => $receives,
@@ -156,11 +162,9 @@ abstract class AbstractAlipayGateway extends AbstractGateway
     }
 
     /**
-     * @param $receives
-     *
-     * @return array
+     * @param array $receives
      */
-    public function refundNotify(array $receives): array
+    public function refundNotify(array $receives)
     {
         throw new GatewayMethodNotSupportException();
     }
@@ -170,7 +174,7 @@ abstract class AbstractAlipayGateway extends AbstractGateway
      *
      * @return array
      */
-    public function closeNotify(array $receives): array
+    public function closeNotify(array $receives)
     {
         throw new GatewayMethodNotSupportException();
     }
@@ -180,37 +184,43 @@ abstract class AbstractAlipayGateway extends AbstractGateway
      *
      * @return bool
      */
-    public function verify($receives): bool
+    public function verify($receives)
     {
         $sign = $receives['sign'];
         unset($receives['sign'], $receives['sign_type']);
         ksort($receives);
 
-        $publicKey = ('.pem' === substr($this->config->get('alipay_public_key'), -4)
-            ? openssl_get_publickey("file://{$this->config->get('alipay_public_key')}")
-            : $this->config->get('alipay_public_key'));
+        $publicKey = ('.pem' === substr($this->config->get('public_key'), -4)
+            ? openssl_get_publickey("file://{$this->config->get('public_key')}")
+            : $this->config->get('public_key'));
+
+        if (is_string($publicKey)) {
+            $publicKey = "-----BEGIN RSA PUBLIC KEY-----\n".
+                wordwrap($publicKey, 64, "\n", true).
+                "\n-----END RSA PUBLIC KEY-----";
+        }
 
         return 1 === openssl_verify(
-            urldecode(
-                http_build_query(
-                    array_filter(
-                        $receives,
-                        function ($value) {
-                            return '' !== $value;
-                        }
+                urldecode(
+                    http_build_query(
+                        array_filter(
+                            $receives,
+                            function ($value) {
+                                return '' !== $value;
+                            }
+                        )
                     )
-                )
-            ),
-            base64_decode($sign),
-            $publicKey,
-            OPENSSL_ALGO_SHA256
-        );
+                ),
+                base64_decode($sign),
+                $publicKey,
+                OPENSSL_ALGO_SHA256
+            );
     }
 
     /**
      * @return string
      */
-    public function success(): string
+    public function success()
     {
         return 'success';
     }
@@ -218,12 +228,12 @@ abstract class AbstractAlipayGateway extends AbstractGateway
     /**
      * @return string
      */
-    public function fail(): string
+    public function fail()
     {
         return 'fail';
     }
 
-    public function receiveNotificationFromRequest(): array
+    public function receiveNotificationFromRequest()
     {
         return $_POST;
     }
@@ -233,14 +243,14 @@ abstract class AbstractAlipayGateway extends AbstractGateway
      *
      * @return array
      */
-    public function convertNotificationToArray($receives): array
+    public function convertNotificationToArray($receives)
     {
         return $receives;
     }
 
     /**
      * @param string $method
-     * @param array  $content
+     * @param array $content
      * @param string $notifyUrl
      * @param string $returnUrl
      *
@@ -268,17 +278,17 @@ abstract class AbstractAlipayGateway extends AbstractGateway
     /**
      * @return string
      */
-    abstract protected function getChargeMethod(): string;
+    abstract protected function getChargeMethod();
 
     /**
      * @param array $payload
      *
      * @return array
      */
-    protected function doCharge(array $payload): array
+    protected function doCharge(array $payload)
     {
         return [
-            'charge_url' => self::OPENAPI_GATEWAY.'?'.http_build_query($payload),
+            'charge_url' => $this->gateway_url.'?'.http_build_query($payload),
             'parameters' => $payload,
         ];
     }
@@ -288,7 +298,7 @@ abstract class AbstractAlipayGateway extends AbstractGateway
      *
      * @return array
      */
-    protected function prepareCharge(Charge $form): array
+    protected function prepareCharge(Charge $form)
     {
         return [];
     }
@@ -298,11 +308,11 @@ abstract class AbstractAlipayGateway extends AbstractGateway
      *
      * @return array
      */
-    protected static function request(array $parameters): array
+    protected function request(array $parameters)
     {
-        $response = (new Request('POST', self::OPENAPI_GATEWAY))->send($parameters);
+        $response = (new Request('POST', $this->gateway_url))->send($parameters);
 
-        if (!$response->isSuccessful()) {
+        if ( ! $response->isSuccessful()) {
             throw new GatewayException('Alipay Gateway Error.', $response);
         }
 
@@ -327,15 +337,21 @@ abstract class AbstractAlipayGateway extends AbstractGateway
      *
      * @return string
      */
-    protected function sign(array $parameters): string
+    protected function sign(array $parameters)
     {
         unset($parameters['sign']);
         ksort($parameters);
         $sign = '';
 
-        $privateKey = '.pem' === substr($this->config->get('app_private_key'), -4)
-            ? openssl_get_privatekey("file://{$this->config->get('app_private_key')}")
-            : $this->config->get('app_private_key');
+        $privateKey = '.pem' === substr($this->config->get('private_key'), -4)
+            ? openssl_get_privatekey("file://{$this->config->get('private_key')}")
+            : $this->config->get('private_key');
+
+        if (is_string($privateKey)) {
+            $privateKey = "-----BEGIN RSA PRIVATE KEY-----".PHP_EOL.
+                wordwrap($privateKey, 64, PHP_EOL, true).PHP_EOL.
+                "-----END RSA PRIVATE KEY-----";
+        }
 
         openssl_sign(
             urldecode(
@@ -361,7 +377,7 @@ abstract class AbstractAlipayGateway extends AbstractGateway
      *
      * @return string
      */
-    protected function formatTradeStatus($status): string
+    protected function formatTradeStatus($status)
     {
         $map = [
             'TRADE_SUCCESS' => 'paid',

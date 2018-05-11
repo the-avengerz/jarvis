@@ -5,15 +5,23 @@
  * @time: 2018-01
  */
 
-namespace Avengers\Jarvis\Contracts;
+namespace Avengers\Jarvis;
+
 
 use Avengers\Jarvis\Requests\Charge;
 use Avengers\Jarvis\Requests\Refund;
 use Avengers\Jarvis\Requests\Close;
 use Avengers\Jarvis\Requests\Query;
 
+/**
+ * Interface GatewayInterface
+ * @package Avengers\Jarvis
+ */
 interface GatewayInterface
 {
+    const PRODUCT_GATEWAY = '';
+    const SANDBOX_GATEWAY = '';
+
     /**
      * 支付.
      *
@@ -21,7 +29,7 @@ interface GatewayInterface
      *
      * @return array
      */
-    public function charge(Charge $form): array;
+    public function charge(Charge $form);
 
     /**
      * 退款.
@@ -30,7 +38,7 @@ interface GatewayInterface
      *
      * @return array
      */
-    public function refund(Refund $form): array;
+    public function refund(Refund $form);
 
     /**
      * 关闭.
@@ -39,7 +47,7 @@ interface GatewayInterface
      *
      * @return array
      */
-    public function close(Close $form): array;
+    public function close(Close $form);
 
     /**
      * 查询.
@@ -48,7 +56,7 @@ interface GatewayInterface
      *
      * @return array
      */
-    public function query(Query $form): array;
+    public function query(Query $form);
 
     /**
      * 支付通知, 触发通知根据不同支付渠道, 可能包含:
@@ -60,7 +68,7 @@ interface GatewayInterface
      *
      * @return array
      */
-    public function chargeNotify(array $receives): array;
+    public function chargeNotify(array $receives);
 
     /**
      * 退款通知, 并非所有支付渠道都支持
@@ -69,7 +77,7 @@ interface GatewayInterface
      *
      * @return array
      */
-    public function refundNotify(array $receives): array;
+    public function refundNotify(array $receives);
 
     /**
      * 关闭通知, 并非所有支付渠道都支持
@@ -78,7 +86,7 @@ interface GatewayInterface
      *
      * @return array
      */
-    public function closeNotify(array $receives): array;
+    public function closeNotify(array $receives);
 
     /**
      * 通知校验.
@@ -87,21 +95,21 @@ interface GatewayInterface
      *
      * @return bool
      */
-    public function verify($receives): bool;
+    public function verify($receives);
 
     /**
      * 通知成功处理响应.
      *
      * @return string
      */
-    public function success(): string;
+    public function success();
 
     /**
      * 通知处理失败响应.
      *
      * @return string
      */
-    public function fail(): string;
+    public function fail();
 
     /**
      * 从请求中获取通知消息.

@@ -7,16 +7,14 @@
 
 namespace Avengers\Jarvis;
 
-use Avengers\Jarvis\Contracts\GatewayInterface;
 use Avengers\Jarvis\Exception\InvalidNotificationException;
-use Avengers\Jarvis\Gateways\AbstractGateway;
 use Avengers\Jarvis\Utils\AbstractOption;
 use Avengers\Jarvis\Utils\Collection;
 use InvalidArgumentException;
 use Avengers\Jarvis\Utils\Config;
 use Avengers\Jarvis\Utils\Str;
 
-class Cashier
+class Jarvis implements AvengerJarvisInterface
 {
     /**
      * @var Collection
@@ -46,12 +44,13 @@ class Cashier
     }
 
     /**
-     * @param $name
-     * @param $class
+     * @return $this
      */
-    public static function extend($name, $class)
+    public function enableDebug()
     {
-        self::$extendGateways[$name] = $class;
+        $this->gateway->enableDebug();
+
+        return $this;
     }
 
     /**
@@ -60,7 +59,7 @@ class Cashier
      *
      * @return AbstractOption
      */
-    public function notify($method, $receives = null): AbstractOption
+    public function notify($method, $receives = null)
     {
         is_null($receives) && $receives = $this->gateway->receiveNotificationFromRequest();
 
@@ -90,7 +89,7 @@ class Cashier
      *
      * @return AbstractOption
      */
-    protected function makeOption($type, $method, array $data): AbstractOption
+    protected function makeOption($type, $method, array $data)
     {
         $class = __NAMESPACE__.'\\'.ucfirst($type).'s\\'.ucfirst($method);
 
@@ -106,7 +105,7 @@ class Cashier
      *
      * @return AbstractGateway
      */
-    protected function makeGateway($channel): GatewayInterface
+    protected function makeGateway($channel)
     {
         list($platform, $gateway) = explode('_', $channel, 2);
 
@@ -127,7 +126,7 @@ class Cashier
     /**
      * @return string
      */
-    public function success(): string
+    public function success()
     {
         return $this->gateway->success();
     }
@@ -135,26 +134,52 @@ class Cashier
     /**
      * @return string
      */
-    public function fail(): string
+    public function fail()
     {
         return $this->gateway->fail();
     }
 
     /**
-     * @param string $method
-     * @param array  $arguments
-     *
+     * @param $order_id
      * @return AbstractOption
      */
-    public function __call($method, array $arguments): AbstractOption
+    public function query($order_id)
+    {
+        return $this->makeResponse('query', $order);
+    }
+
+    /**
+     * @param $order_id
+     * @return AbstractOption
+     */
+    public function refund($order_id)
+    {
+        return $this->makeResponse('refund', $order);
+    }
+
+    /**
+     * @param array $order
+     * @return AbstractOption
+     */
+    public function charge(array $order)
+    {
+        return $this->makeResponse('charge', $order);
+    }
+
+    /**
+     * @param $method
+     * @param $order
+     * @return AbstractOption
+     */
+    protected function makeResponse($method, $order)
     {
         $request = $this->makeOption(
             'request',
             $method,
-            $arguments[0]
+            $order
         );
 
-        $response = $this->gateway->$method($request);
+        $response = $this->gateway->charge($request);
 
         return $this->makeOption(
             'response',

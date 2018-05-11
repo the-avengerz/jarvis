@@ -9,12 +9,12 @@ namespace Avengers\Jarvis\Gateways\Alipay;
 
 class Qr extends AbstractAlipayGateway
 {
-    protected function getChargeMethod(): string
+    protected function getChargeMethod()
     {
         return 'alipay.trade.precreate';
     }
 
-    protected function doCharge(array $payload): array
+    protected function doCharge(array $payload)
     {
         $response = $this->request($payload);
 

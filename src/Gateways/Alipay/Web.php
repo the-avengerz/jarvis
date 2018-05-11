@@ -11,12 +11,12 @@ use Avengers\Jarvis\Requests\Charge;
 
 class Web extends AbstractAlipayGateway
 {
-    protected function getChargeMethod(): string
+    protected function getChargeMethod()
     {
         return 'alipay.trade.page.pay';
     }
 
-    protected function prepareCharge(Charge $form): array
+    protected function prepareCharge(Charge $form)
     {
         return [
             'product_code' => 'FAST_INSTANT_TRADE_PAY',

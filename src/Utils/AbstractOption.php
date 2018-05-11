@@ -43,5 +43,5 @@ abstract class AbstractOption extends Collection
     /**
      * @param OptionsResolver $resolver
      */
-    abstract protected function configureResolver(OptionsResolver $resolver): void;
+    abstract protected function configureResolver(OptionsResolver $resolver);
 }

@@ -14,19 +14,19 @@ class App extends AbstractAlipayGateway
     /**
      * @return string
      */
-    protected function getChargeMethod(): string
+    protected function getChargeMethod()
     {
         return 'alipay.trade.app.pay';
     }
 
-    protected function prepareCharge(Charge $form): array
+    protected function prepareCharge(Charge $form)
     {
         return [
             'product_code' => 'QUICK_MSECURITY_PAY',
         ];
     }
 
-    protected function doCharge(array $payload): array
+    protected function doCharge(array $payload)
     {
         return [
             'charge_url' => '',

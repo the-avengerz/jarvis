@@ -15,7 +15,7 @@ class Charge extends AbstractOption
     /**
      * @param OptionsResolver $resolver
      */
-    protected function configureResolver(OptionsResolver $resolver): void
+    protected function configureResolver(OptionsResolver $resolver)
     {
         $resolver->setRequired(
             [
