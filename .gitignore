@@ -1,6 +1,4 @@
 /vendor/
 .idea
 composer.lock
-*orig
-examples
 .php_cs.cache
