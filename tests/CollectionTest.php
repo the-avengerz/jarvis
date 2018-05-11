@@ -7,11 +7,11 @@
 
 namespace Avengers\Jarvis\Testing;
 
+
 use Avengers\Jarvis\Utils\Collection;
 
 class CollectionTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testOffsetExists()
     {
         $collection = new Collection([

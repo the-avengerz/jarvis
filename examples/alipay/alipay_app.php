@@ -15,7 +15,6 @@ $config = include __DIR__.'/config.php';
 
 $jarvis = new Jarvis(Jarvis::JARVIS_ALIPAY_APP, $config);
 
-
 $jarvis->enableDebug();
 
 $form = $jarvis->charge([

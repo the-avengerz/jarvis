@@ -7,9 +7,14 @@
 
 namespace Avengers\Jarvis\Responses;
 
+
 use Avengers\Jarvis\Utils\AbstractOption;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Class Charge
+ * @package Avengers\Jarvis\Responses
+ */
 class Charge extends AbstractOption
 {
     /**

@@ -7,8 +7,13 @@
 
 namespace Avengers\Jarvis\Utils;
 
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Class AbstractOption
+ * @package Avengers\Jarvis\Utils
+ */
 abstract class AbstractOption extends Collection
 {
     /**
