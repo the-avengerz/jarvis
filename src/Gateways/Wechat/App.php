@@ -16,12 +16,12 @@ class App extends AbstractWechatGateway
      *
      * @return array
      */
-    protected function prepareCharge(Charge $form): array
+    protected function prepareCharge(Charge $form)
     {
         return [];
     }
 
-    protected function doCharge(array $response, Charge $form): array
+    protected function doCharge(array $response, Charge $form)
     {
         $parameters = [
             'appid' => $this->config->get('app_id'),
@@ -39,7 +39,7 @@ class App extends AbstractWechatGateway
         ];
     }
 
-    protected function getTradeType(): string
+    protected function getTradeType()
     {
         return 'APP';
     }

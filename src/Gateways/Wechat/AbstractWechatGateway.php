@@ -9,7 +9,7 @@ namespace Avengers\Jarvis\Gateways\Wechat;
 
 use FastD\Http\Request;
 use Avengers\Jarvis\Exception\GatewayException;
-use Avengers\Jarvis\Gateways\AbstractGateway;
+use Avengers\Jarvis\AbstractGateway;
 use Avengers\Jarvis\Requests\Charge;
 use Avengers\Jarvis\Requests\Close;
 use Avengers\Jarvis\Requests\Query;
@@ -36,7 +36,7 @@ abstract class AbstractWechatGateway extends AbstractGateway
      *
      * @return array
      */
-    public function charge(Charge $form): array
+    public function charge(Charge $form)
     {
         $payload = $this->createPayload(
             array_merge(
@@ -66,7 +66,7 @@ abstract class AbstractWechatGateway extends AbstractGateway
      *
      * @return array
      */
-    public function refund(Refund $form): array
+    public function refund(Refund $form)
     {
         $payload = $this->createPayload(
             array_merge(
@@ -102,7 +102,7 @@ abstract class AbstractWechatGateway extends AbstractGateway
      *
      * @return array
      */
-    public function close(Close $form): array
+    public function close(Close $form)
     {
         $payload = $this->createPayload(
             [
@@ -122,7 +122,7 @@ abstract class AbstractWechatGateway extends AbstractGateway
      *
      * @return array
      */
-    public function query(Query $form): array
+    public function query(Query $form)
     {
         $parameters = [
             'appid' => $this->config->get('app_id'),
@@ -165,7 +165,7 @@ abstract class AbstractWechatGateway extends AbstractGateway
      *
      * @return array
      */
-    public function chargeNotify(array $receives): array
+    public function chargeNotify(array $receives)
     {
         $amount = ($receives['cash_fee'] + ($receives['coupon_fee'] ?? 0)) / 100;
 
@@ -189,7 +189,7 @@ abstract class AbstractWechatGateway extends AbstractGateway
      *
      * @return array
      */
-    public function refundNotify(array $receives): array
+    public function refundNotify(array $receives)
     {
         // TODO
     }
@@ -201,7 +201,7 @@ abstract class AbstractWechatGateway extends AbstractGateway
      *
      * @return array
      */
-    public function closeNotify(array $receives): array
+    public function closeNotify(array $receives)
     {
         throw new GatewayException('Wechat channels are not supported to send close notify');
     }
@@ -213,7 +213,7 @@ abstract class AbstractWechatGateway extends AbstractGateway
      *
      * @return bool
      */
-    public function verify($receives): bool
+    public function verify($receives)
     {
         $receives = $this->parseXml($receives);
 
@@ -225,7 +225,7 @@ abstract class AbstractWechatGateway extends AbstractGateway
      *
      * @return string
      */
-    public function success(): string
+    public function success()
     {
         return '<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>';
     }
@@ -235,7 +235,7 @@ abstract class AbstractWechatGateway extends AbstractGateway
      *
      * @return string
      */
-    public function fail(): string
+    public function fail()
     {
         return '<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[wrong]]></return_msg></xml>';
     }
@@ -245,7 +245,7 @@ abstract class AbstractWechatGateway extends AbstractGateway
      *
      * @return array
      */
-    public function convertNotificationToArray($receives): array
+    public function convertNotificationToArray($receives)
     {
         return $this->parseXml($receives);
     }
@@ -253,7 +253,7 @@ abstract class AbstractWechatGateway extends AbstractGateway
     /**
      * @return string
      */
-    public function receiveNotificationFromRequest(): string
+    public function receiveNotificationFromRequest()
     {
         return file_get_contents('php://input');
     }
@@ -263,7 +263,7 @@ abstract class AbstractWechatGateway extends AbstractGateway
      *
      * @return array
      */
-    abstract protected function prepareCharge(Charge $form): array;
+    abstract protected function prepareCharge(Charge $form);
 
     /**
      * @param array  $response
@@ -271,12 +271,12 @@ abstract class AbstractWechatGateway extends AbstractGateway
      *
      * @return array
      */
-    abstract protected function doCharge(array $response, Charge $form): array;
+    abstract protected function doCharge(array $response, Charge $form);
 
     /**
      * @return string
      */
-    abstract protected function getTradeType(): string;
+    abstract protected function getTradeType();
 
     /**
      * @param array $payload
@@ -304,7 +304,7 @@ abstract class AbstractWechatGateway extends AbstractGateway
      *
      * @return string
      */
-    protected function sign(array $parameters): string
+    protected function sign(array $parameters)
     {
         unset($parameters['sign']);
         ksort($parameters);
@@ -331,7 +331,7 @@ abstract class AbstractWechatGateway extends AbstractGateway
      *
      * @return array
      */
-    protected function parseXml($xml): array
+    protected function parseXml($xml)
     {
         return json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
     }
@@ -341,7 +341,7 @@ abstract class AbstractWechatGateway extends AbstractGateway
      *
      * @return string
      */
-    protected function generateXml(array $arr): string
+    protected function generateXml(array $arr)
     {
         $xml = '<xml>';
         foreach ($arr as $key => $val) {
@@ -360,7 +360,7 @@ abstract class AbstractWechatGateway extends AbstractGateway
      *
      * @return array
      */
-    protected function request($url, array $payload, $cert = null, $sslKey = null): array
+    protected function request($url, array $payload, $cert = null, $sslKey = null)
     {
         $options = [];
         if (!is_null($cert)) {
@@ -395,7 +395,7 @@ abstract class AbstractWechatGateway extends AbstractGateway
      *
      * @return int
      */
-    protected function formatAmount($amount): int
+    protected function formatAmount($amount)
     {
         return (int) ($amount * 1000 / 10);
     }
@@ -405,7 +405,7 @@ abstract class AbstractWechatGateway extends AbstractGateway
      *
      * @return string
      */
-    protected function formatTradeStatus($status): string
+    protected function formatTradeStatus($status)
     {
         switch ($status) {
             case 'NOTPAY':

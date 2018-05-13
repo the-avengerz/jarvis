@@ -20,7 +20,7 @@ class Official extends AbstractWechatGateway
      *
      * @return array
      */
-    protected function prepareCharge(Charge $form): array
+    protected function prepareCharge(Charge $form)
     {
         $openId = $form->has('extras.open_id')
             ? $form->get('extras.open_id')
@@ -31,7 +31,7 @@ class Official extends AbstractWechatGateway
         ];
     }
 
-    protected function doCharge(array $response, Charge $form): array
+    protected function doCharge(array $response, Charge $form)
     {
         $parameters = [
             'appId' => $this->config->get('app_id'),
@@ -49,12 +49,12 @@ class Official extends AbstractWechatGateway
         ];
     }
 
-    protected function getTradeType(): string
+    protected function getTradeType()
     {
         return 'JSAPI';
     }
 
-    protected function getOpenId($code): string
+    protected function getOpenId($code)
     {
         $parameters = [
             'appid' => $this->config->get('app_id'),

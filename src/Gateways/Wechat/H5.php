@@ -18,7 +18,7 @@ class H5 extends AbstractWechatGateway
      *
      * @return array
      */
-    protected function prepareCharge(Charge $form): array
+    protected function prepareCharge(Charge $form)
     {
         $content = [
             'scene_info' => json_encode(
@@ -40,7 +40,7 @@ class H5 extends AbstractWechatGateway
         return $content;
     }
 
-    protected function doCharge(array $response, Charge $form): array
+    protected function doCharge(array $response, Charge $form)
     {
         $url = $response['mweb_url'];
         if (!$this->config->get('spider', false)) {
@@ -54,12 +54,12 @@ class H5 extends AbstractWechatGateway
         ];
     }
 
-    protected function getTradeType(): string
+    protected function getTradeType()
     {
         return 'MWEB';
     }
 
-    public function spider($url): string
+    public function spider($url)
     {
         $request = (new Request('GET', $url))->withOption(CURLOPT_REFERER, $this->config->get('site_url'));
         if ($this->config->get('spider_by_proxy', false)) {

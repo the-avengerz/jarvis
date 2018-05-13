@@ -16,12 +16,12 @@ class Qr extends AbstractWechatGateway
      *
      * @return array
      */
-    protected function prepareCharge(Charge $form): array
+    protected function prepareCharge(Charge $form)
     {
         return [];
     }
 
-    protected function doCharge(array $response, Charge $form): array
+    protected function doCharge(array $response, Charge $form)
     {
         return [
             'charge_url' => $response['code_url'],
@@ -31,7 +31,7 @@ class Qr extends AbstractWechatGateway
         ];
     }
 
-    protected function getTradeType(): string
+    protected function getTradeType()
     {
         return 'NATIVE';
     }

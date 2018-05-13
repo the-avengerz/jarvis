@@ -14,7 +14,7 @@ class Mina extends Official
 {
     const JSAPI_AUTH_URL = 'https://api.weixin.qq.com/sns/jscode2session';
 
-    protected function getOpenId($code): string
+    protected function getOpenId($code)
     {
         $parameters = [
             'appid' => $this->config->get('app_id'),
